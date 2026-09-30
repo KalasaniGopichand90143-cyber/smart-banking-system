@@ -1,0 +1,613 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Banking</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+    <div class="login-container" id="loginSection">
+
+        <h1>Smart Banking</h1>
+        <p>Login to your account</p>
+
+        <form id="loginForm">
+
+            <label for="email">Email</label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <label for="password">Password</label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+            >
+
+            <button type="submit">Login</button>
+
+        </form>
+
+        <p id="message"></p>
+
+    </div>
+
+
+    <!-- Dashboard -->
+
+    <div class="dashboard" id="dashboardSection">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+
+        <h1>Smart Banking</h1>
+
+        <button id="logoutButton">
+            Logout
+        </button>
+
+    </header>
+
+
+    <div class="dashboard-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <button onclick="showSection('overview')">
+                Dashboard
+            </button>
+
+            <button id="adminButton" onclick="showSection('adminSection')">
+                Admin Dashboard
+            </button>
+
+            <button onclick="showSection('accountsSection')">
+                Accounts
+            </button>
+
+            <button onclick="showSection('depositSection')">
+                Deposit
+            </button>
+
+            <button onclick="showSection('withdrawSection')">
+                Withdraw
+            </button>
+
+            <button onclick="showSection('transferSection')">
+                Transfer
+            </button>
+
+            <button onclick="showSection('transactionSection')">
+                Transactions
+            </button>
+
+            <button onclick="showSection('profileSection')">
+                Profile
+            </button>
+
+        </aside>
+
+
+        <!-- Main Content -->
+       <main class="main-content">
+
+            <!-- ================= DASHBOARD ================= -->
+            <section id="overview">
+
+                <h2>Dashboard</h2>
+
+                <div class="summary">
+
+                    <div class="card">
+                        <h3>Total Balance</h3>
+                        <p id="totalBalance">₹0</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Accounts</h3>
+                        <p id="accountCount">0</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Total Deposits</h3>
+                        <p id="totalDeposits">₹0</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Total Withdrawals</h3>
+                        <p id="totalWithdrawals">₹0</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Total Transfers</h3>
+                        <p id="totalTransfers">₹0</p>
+                    </div>
+
+                </div>
+
+                <h2>Recent Transactions</h2>
+
+                <div id="transactions"></div>
+
+            </section>
+
+
+            <!-- ================= ACCOUNTS ================= -->
+            <section id="accountsSection">
+
+                <h2>My Accounts</h2>
+
+                <div id="accounts"></div>
+
+                <h2>Create New Account</h2>
+
+                <div class="account">
+
+                    <label for="accountType">
+                        Account Type
+                    </label>
+
+                    <select id="accountType">
+                        <option value="SAVINGS">
+                            Savings Account
+                        </option>
+
+                        <option value="CURRENT">
+                            Current Account
+                        </option>
+                    </select>
+
+                    <button id="createAccountButton">
+                        Create Account
+                    </button>
+
+                    <p id="accountMessage"></p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= DEPOSIT ================= -->
+            <section id="depositSection">
+
+                <h2>Deposit Money</h2>
+
+                <div class="bank-form">
+
+                    <div class="form-group">
+
+                        <label for="depositAccount">
+                            Select Account
+                        </label>
+
+                        <select id="depositAccount">
+                            <option value="">
+                                Select an account
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="depositAmount">
+                            Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="depositAmount"
+                            placeholder="Enter amount"
+                            min="1"
+                        >
+
+                    </div>
+
+                    <button id="depositButton">
+                        Deposit Money
+                    </button>
+
+                    <p id="depositMessage"></p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= WITHDRAW ================= -->
+            <section id="withdrawSection">
+
+                <h2>Withdraw Money</h2>
+
+                <div class="bank-form">
+
+                    <div class="form-group">
+
+                        <label for="withdrawAccount">
+                            Select Account
+                        </label>
+
+                        <select id="withdrawAccount">
+                            <option value="">
+                                Select an account
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="withdrawAmount">
+                            Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="withdrawAmount"
+                            placeholder="Enter amount"
+                            min="1"
+                        >
+
+                    </div>
+
+                    <button id="withdrawButton">
+                        Withdraw Money
+                    </button>
+
+                    <p id="withdrawMessage"></p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= TRANSFER ================= -->
+            <section id="transferSection">
+
+                <h2>Transfer Money</h2>
+
+                <div class="bank-form">
+
+                    <div class="form-group">
+
+                        <label for="transferSender">
+                            From Account
+                        </label>
+
+                        <select id="transferSender">
+                            <option value="">
+                                Select your account
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="transferReceiver">
+                            Receiver Account Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="transferReceiver"
+                            placeholder="Enter receiver account number"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="transferAmount">
+                            Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="transferAmount"
+                            placeholder="Enter amount"
+                            min="1"
+                        >
+
+                    </div>
+
+                    <button id="transferButton">
+                        Transfer Money
+                    </button>
+
+                    <p id="transferMessage"></p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= TRANSACTIONS ================= -->
+            <section id="transactionSection">
+
+                <h2>Transaction History</h2>
+
+                <div class="account">
+
+                    <label for="transactionType">
+                        Transaction Type
+                    </label>
+
+                    <select id="transactionType">
+
+                        <option value="">
+                            All Transactions
+                        </option>
+
+                        <option value="DEPOSIT">
+                            Deposit
+                        </option>
+
+                        <option value="WITHDRAW">
+                            Withdraw
+                        </option>
+
+                        <option value="TRANSFER">
+                            Transfer
+                        </option>
+
+                    </select>
+
+                    <button id="loadTransactions">
+                        View Transactions
+                    </button>
+
+                    <div class="pagination">
+
+                        <button id="previousPage">
+                            ← Previous
+                        </button>
+
+                        <span id="pageNumber">
+                            Page 1
+                        </span>
+
+                        <button id="nextPage">
+                            Next →
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div id="transactionHistory"></div>
+
+            </section>
+
+
+            <!-- ================= PROFILE ================= -->
+            <section id="profileSection">
+
+                <h2>My Profile</h2>
+
+                <div class="profile-card">
+
+                    <div class="profile-row">
+                        <span>Name</span>
+                        <strong id="profileName">
+                            Loading...
+                        </strong>
+                    </div>
+
+                    <div class="profile-row">
+                        <span>Email</span>
+                        <strong id="profileEmail">
+                            Loading...
+                        </strong>
+                    </div>
+
+                    <div class="profile-row">
+                        <span>Date of Birth</span>
+                        <strong id="profileDob">
+                            Loading...
+                        </strong>
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Phone Number</label>
+
+                        <input
+                            type="text"
+                            id="editPhone"
+                        >
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Address</label>
+
+                        <input
+                            type="text"
+                            id="editAddress"
+                        >
+
+                    </div>
+
+                    <button id="updateProfileButton">
+                        Update Profile
+                    </button>
+
+                    <p id="profileMessage"></p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= ADMIN ================= -->
+            <section id="adminSection" style="display: none;">
+
+                <h2>Admin Dashboard</h2>
+
+                <div class="summary">
+
+                    <div class="card">
+                        <h3>Total Users</h3>
+                        <p id="adminTotalUsers">0</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Total Accounts</h3>
+                        <p id="adminTotalAccounts">0</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Total Balance</h3>
+                        <p id="adminTotalBalance">₹0</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Total Transactions</h3>
+                        <p id="adminTotalTransactions">0</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Total Deposits</h3>
+                        <p id="adminTotalDeposits">₹0</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Total Withdrawals</h3>
+                        <p id="adminTotalWithdrawals">₹0</p>
+                    </div>
+
+                </div>
+
+
+                <!-- ALL USERS -->
+
+                <div class="admin-users">
+
+                    <h2>All Users</h2>
+
+                    <div class="admin-filters">
+
+                        <input
+                            type="text"
+                            id="adminSearch"
+                            placeholder="Search by name or email"
+                        >
+
+                        <select id="adminStatusFilter">
+
+                            <option value="">
+                                All Accounts
+                            </option>
+
+                            <option value="ACTIVE">
+                                Active
+                            </option>
+
+                            <option value="INACTIVE">
+                                Inactive
+                            </option>
+
+                        </select>
+
+                        <button id="adminResetFilter">
+                            Reset
+                        </button>
+
+                    </div>
+
+                    <div id="adminUsersContainer">
+                        <p>Loading users...</p>
+                    </div>
+
+                </div>
+
+
+                <!-- ALL TRANSACTIONS -->
+
+                <div class="admin-transactions">
+
+                    <h2>All Transactions</h2>
+
+                    <div class="admin-transaction-filters">
+
+                        <select id="adminTransactionType">
+
+                            <option value="">
+                                All Types
+                            </option>
+
+                            <option value="DEPOSIT">
+                                Deposit
+                            </option>
+
+                            <option value="WITHDRAW">
+                                Withdraw
+                            </option>
+
+                            <option value="TRANSFER">
+                                Transfer
+                            </option>
+
+                        </select>
+
+
+                        <select id="adminTransactionStatus">
+
+                            <option value="">
+                                All Status
+                            </option>
+
+                            <option value="COMPLETED">
+                                Completed
+                            </option>
+
+                            <option value="FAILED">
+                                Failed
+                            </option>
+
+                            <option value="PENDING">
+                                Pending
+                            </option>
+
+                        </select>
+
+
+                        <button id="adminTransactionReset">
+                            Reset
+                        </button>
+
+                    </div>
+
+                    <div id="adminTransactionsContainer">
+                        <p>Loading transactions...</p>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+    <script src="script.js"></script>
+
+</body>
