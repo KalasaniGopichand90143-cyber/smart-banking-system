@@ -536,3 +536,5 @@ def test_customer_cannot_access_admin_dashboard(test_user):
     )
 
     assert response.status_code == 403
+
+
