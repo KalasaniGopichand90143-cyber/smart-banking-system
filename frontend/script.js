@@ -1,6 +1,9 @@
 
 // SMART BANKING SYSTEM - script.js
 
+// API CONFIGURATION
+const API_BASE = "https://smart-banking-system-kymh.onrender.com";
+const API_BASE_URL = API_BASE;
 
 let currentPage = 1;
 let adminUsers = [];
@@ -9,10 +12,7 @@ let currentUserRole = null;
 
 
 
-// API CONFIGURATION
 
-
-const API_BASE_URL = "http://127.0.0.1:8000";
 
 
 
@@ -93,7 +93,7 @@ if (loginForm) {
         try {
 
             const response = await fetch(
-                `${API_BASE_URL}/login`,
+                `${API_BASE}/login`,
                 {
                     method: "POST",
 
@@ -162,6 +162,170 @@ if (loginForm) {
 
     });
 }
+
+
+
+const showRegister = document.getElementById("showRegister");
+const showLogin = document.getElementById("showLogin");
+
+const registerSection = document.getElementById("registerSection");
+const loginSection = document.getElementById("loginSection");
+
+const registerForm = document.getElementById("registerForm");
+const registerMessage = document.getElementById("registerMessage");
+
+
+if (showRegister) {
+
+    showRegister.addEventListener("click", function(event) {
+
+        event.preventDefault();
+
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("registerSection").style.display = "block";
+        document.getElementById("dashboardSection").style.display = "none";
+
+    });
+
+}
+
+
+if (showLogin) {
+
+    showLogin.addEventListener("click", function(event) {
+
+        event.preventDefault();
+
+        document.getElementById("registerSection").style.display = "none";
+        document.getElementById("loginSection").style.display = "block";
+        document.getElementById("dashboardSection").style.display = "none";
+
+    });
+
+}
+
+if (registerForm) {
+
+    registerForm.addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        const fullName =
+            document.getElementById("registerFullName").value.trim();
+
+        const dateOfBirth =
+            document.getElementById("registerDateOfBirth").value;
+
+        const phone =
+            document.getElementById("registerPhone").value.trim();
+
+        const email =
+            document.getElementById("registerEmail").value.trim();
+
+        const password =
+            document.getElementById("registerPassword").value;
+
+        const address =
+            document.getElementById("registerAddress").value.trim();
+
+
+        if (
+            !fullName ||
+            !dateOfBirth ||
+            !phone ||
+            !email ||
+            !password
+        ) {
+
+            registerMessage.textContent =
+                "Please fill in all required fields.";
+
+            return;
+        }
+
+
+        try {
+
+            registerMessage.textContent =
+                "Creating your account...";
+
+
+            const response = await fetch(
+                `${API_BASE}/users`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        full_name: fullName,
+                        date_of_birth: dateOfBirth,
+                        phone_number: phone,
+                        email: email,
+                        password: password,
+                        address: address
+
+                    })
+                }
+            );
+
+
+            const data = await getJsonResponse(response);
+
+
+            if (!response.ok) {
+
+                registerMessage.textContent =
+                    data.detail || "Registration failed.";
+
+                return;
+            }
+
+
+            registerMessage.textContent =
+                "Registration successful! Please login.";
+
+
+            // Put registered email into login form
+            const loginEmail =
+                document.getElementById("email");
+
+            if (loginEmail) {
+                loginEmail.value = email;
+            }
+
+
+            // Clear registration form
+            registerForm.reset();
+
+
+            // Go back to login page
+            setTimeout(function() {
+
+                registerSection.style.display = "none";
+                loginSection.style.display = "block";
+
+            }, 1000);
+
+
+        } catch (error) {
+
+            console.error("Registration error:", error);
+
+            registerMessage.textContent =
+                "Unable to connect to the server.";
+
+        }
+
+    });
+
+}
+
+
+
 
 
 
@@ -1914,7 +2078,6 @@ if (updateProfileButton) {
 
 // SECTION SWITCHING
 
-
 function showSection(sectionId) {
 
     if (
@@ -1922,13 +2085,37 @@ function showSection(sectionId) {
         currentUserRole !== "ADMIN"
     ) {
 
-        console.warn(
-            "Admin access denied."
-        );
-
+        console.warn("Admin access denied.");
         return;
     }
 
+
+    // Hide Login and Registration
+    const loginSection =
+        document.getElementById("loginSection");
+
+    const registerSection =
+        document.getElementById("registerSection");
+
+    if (loginSection) {
+        loginSection.style.display = "none";
+    }
+
+    if (registerSection) {
+        registerSection.style.display = "none";
+    }
+
+
+    // Show Dashboard
+    const dashboardSection =
+        document.getElementById("dashboardSection");
+
+    if (dashboardSection) {
+        dashboardSection.style.display = "block";
+    }
+
+
+    // Dashboard content sections
     const sections = [
         "overview",
         "accountsSection",
@@ -1940,19 +2127,21 @@ function showSection(sectionId) {
         "adminSection"
     ];
 
-    sections.forEach(
-        function(id) {
 
-            const section =
-                document.getElementById(id);
+    // Hide all dashboard sections
+    sections.forEach(function(id) {
 
-            if (section) {
-                section.style.display =
-                    "none";
-            }
+        const section =
+            document.getElementById(id);
+
+        if (section) {
+            section.style.display = "none";
         }
-    );
 
+    });
+
+
+    // Show selected section
     const selectedSection =
         document.getElementById(sectionId);
 
@@ -1966,9 +2155,11 @@ function showSection(sectionId) {
         return;
     }
 
-    selectedSection.style.display =
-        "block";
 
+    selectedSection.style.display = "block";
+
+
+    // Load required data
     if (sectionId === "overview") {
         loadDashboard();
     }
@@ -2003,8 +2194,6 @@ function showSection(sectionId) {
         loadAdminTransactions();
     }
 }
-
-
 
 // LOGOUT
 
